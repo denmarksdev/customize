@@ -1,4 +1,7 @@
-﻿namespace Customize.Tests.Functional.Customer
+﻿using Customize.Domain.Entities;
+using Customize.Tests.Mocks;
+
+namespace Customize.Tests.Functional.CustomerServices
 {
     public class CustomerServiceTests
     {
@@ -6,11 +9,28 @@
         /// 1.1 - Deve validar os dados obrigatórios do cliente antes de salvar os dados.
         /// </summary>
         [Fact]
-        public void ShoudValidataDataBeforeSave()
+        public async Task ShoudValidataDataBeforeSave()
         {
             // Arrange
+            var customer = new Customer(
+                id: string.Empty,
+                name: string.Empty,
+                cellphone:"11111",
+                email: "jhondoe.teste.com",
+                createdAt: DateTime.MinValue
+                );
+
             // Act
+            var result = await _mocks.CustomerService.SaveAsync(customer);
+
             // Assert
+            Assert.NotNull(result);
+            Assert.False(result.Sucess);
+            Assert.Equal("Id do cliente é obrigatório.", result.Errors[nameof(Customer.Id)]);
+            Assert.Equal("Nome do cliente é obrigatório.", result.Errors[nameof(Customer.Name)]);
+            Assert.Equal("Número do celular inválido. Pais, DD, e numero são obrigatórios.", result.Errors[nameof(Customer.Cellphone)]);
+            Assert.Equal("Email inválido", result.Errors[nameof(Customer.Email)]);
+            Assert.Equal("Data do cadastro inválido.", result.Errors[nameof(Customer.CreatedAt)]);
         }
 
         /// <summary>
@@ -89,5 +109,10 @@
             // Act
             // Assert
         }
+
+
+        #region Setup
+        private readonly CustomizeMocks _mocks = new(); 
+        #endregion Setup
     }
 }
