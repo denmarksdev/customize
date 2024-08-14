@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Customize.Domain\Customize.Domain.csproj" />
+    <ProjectReference Include="..\Customize.Infra\Customize.Infra.csproj" />
     <ProjectReference Include="..\Customize.Services\Customize.Services.csproj" />
   </ItemGroup>
 

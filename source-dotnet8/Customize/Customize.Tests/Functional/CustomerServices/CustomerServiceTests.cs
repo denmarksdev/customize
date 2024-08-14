@@ -18,7 +18,7 @@ namespace Customize.Tests.Functional.CustomerServices
             var customer = new Customer(
                 id: string.Empty,
                 name: string.Empty,
-                cellphone:"11111",
+                cellphone: "11111",
                 email: "jhondoe.teste.com",
                 createdAt: DateTime.MinValue
                 );
@@ -61,7 +61,7 @@ namespace Customize.Tests.Functional.CustomerServices
             Assert.True(result.Sucess);
             Assert.Empty(result.Errors);
 
-            _mocks.CustomerRepositoryMock.Verify(m => m.SaveAsync(customer),Times.Once);
+            _mocks.CustomerRepositoryMock.Verify(m => m.SaveAsync(customer), Times.Once);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Customize.Tests.Functional.CustomerServices
 
             var queryResult = new QueryResult<Customer> { Items = customerList };
 
-            var queryParam = new CustomerQueryParam();
+            var queryParam = new CustomerQueryParam(new DateRangeQueryParam(start: DateTime.Now, end: DateTime.Now));
 
             _mocks.CustomerRepositoryMock
                 .Setup(c => c.ListAsync(queryParam))
@@ -108,11 +108,11 @@ namespace Customize.Tests.Functional.CustomerServices
                 .AddSimpleCustomer("Jhon Doe")
                 .Build();
 
-            var customer =customerList[0];
+            var customer = customerList[0];
 
             var queryResult = new QueryResult<Customer> { Items = customerList };
 
-            var queryParam = new CustomerQueryParam();
+            var queryParam = new CustomerQueryParam(new DateRangeQueryParam(start: DateTime.Now, end: DateTime.Now));
 
             _mocks.CustomerRepositoryMock
                 .Setup(c => c.FindAsync(customer.Id))
@@ -141,10 +141,10 @@ namespace Customize.Tests.Functional.CustomerServices
                 .AddSimpleCustomer("Jhon Doe")
                 .Build();
 
-            var customer = customerList[0]; 
+            var customer = customerList[0];
             Customer? customerOnDB = null;
 
-            _mocks.CustomerRepositoryMock.Setup(c=> c.FindAsync(customer.Id))
+            _mocks.CustomerRepositoryMock.Setup(c => c.FindAsync(customer.Id))
                 .ReturnsAsync(customerOnDB);
 
             // Act
@@ -247,7 +247,7 @@ namespace Customize.Tests.Functional.CustomerServices
         }
 
         #region Setup
-        private readonly CustomizeMocks _mocks = new(); 
+        private readonly CustomizeMocks _mocks = new();
         #endregion Setup
     }
 }
