@@ -13,6 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customize.Infra", "Customiz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customize.Services", "Customize.Services\Customize.Services.csproj", "{6624336A-618B-4E5B-A0EF-B7C20A828A2D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DynamoDB", "DynamoDB", "{302DE6D5-D819-4DE7-9674-DAB4F013F366}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\access_patterns.xlsx = ..\..\..\access_patterns.xlsx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
