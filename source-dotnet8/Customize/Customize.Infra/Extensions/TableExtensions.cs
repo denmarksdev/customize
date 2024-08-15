@@ -13,6 +13,7 @@ namespace Customize.Infra.Extensions
         public const string CustomerPK = "CUST#";
 
         public const string SkDateIndex = "GSI_SK_CreatedAt";
+        public const string InverterIndexSkPkIndex = "GSI_SK_PK";
 
         #region Customer
 
