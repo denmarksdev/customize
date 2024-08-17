@@ -18,5 +18,13 @@ namespace Customize.Infra.Factories
             return client;
         }
 
+        public static AmazonDynamoDBClient Build()
+        {
+            var creds = new BasicAWSCredentials("xxx", "xxx");
+            var client = new AmazonDynamoDBClient(creds)!;
+
+            return client;
+        }
+
     }
 }
