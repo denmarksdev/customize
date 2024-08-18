@@ -1,0 +1,33 @@
+<form [formGroup]="customerForm" (ngSubmit)="onSubmit()" class="container">
+    <div class="container">
+        <!-- <mat-form-field appearance="fill">
+            <mat-label>ID</mat-label>
+            <input matInput formControlName="id" readonly>
+        </mat-form-field> -->
+
+        <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" ng-model>
+            @if (email?.invalid) {
+                <mat-error>Erro</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Cellphone</mat-label>
+            <input matInput formControlName="cellphone" ng-model>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" ng-model>
+        </mat-form-field>
+    </div>
+
+    <button mat-flat-button color="primary" type="submit" [disabled]="!customerForm.valid" >Cadastrar</button>
+
+    @if (isLoading) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+
+</form>
