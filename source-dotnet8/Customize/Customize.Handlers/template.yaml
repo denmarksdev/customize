@@ -19,6 +19,7 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
       PackageType: Zip
       Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_Get_Generated::Get
       Events: {RootGet: {Type: Api, Properties: {Path: /api/v1/customers, Method: GET}}}
@@ -39,6 +40,7 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
       PackageType: Zip
       Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_GetById_Generated::GetById
       Events:
@@ -64,6 +66,7 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
       PackageType: Zip
       Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_Post_Generated::Post
       Events:
@@ -89,6 +92,7 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
       PackageType: Zip
       Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_Put_Generated::Put
       Events:
@@ -114,13 +118,14 @@ Resources:
       Timeout: 30
       Policies:
         - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
       PackageType: Zip
       Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_Delete_Generated::Delete
       Events:
         RootDelete:
           Type: Api
           Properties:
-            Path: /api/v1/customers
+            Path: /api/v1/customers/{id}
             Method: DELETE
   CustomizeTable:
     Type: AWS::DynamoDB::Table

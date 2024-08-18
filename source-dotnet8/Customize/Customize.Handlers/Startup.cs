@@ -1,5 +1,13 @@
+using Amazon.DynamoDBv2;
 using Amazon.Lambda.Annotations;
 using Microsoft.Extensions.DependencyInjection;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon;
+using Customize.Domain.Repositories;
+using Customize.Infra.Repositories;
+using Customize.Domain.Services;
+using Amazon.Lambda.Core;
+using Customize.Services;
 
 namespace Customize.Handlers;
 
@@ -13,15 +21,18 @@ public class Startup
         //var builder = new ConfigurationBuilder()
         //                    .AddJsonFile("appsettings.json", true);
 
-        //// Add AWS Systems Manager as a potential provider for the configuration. This is 
-        //// available with the Amazon.Extensions.Configuration.SystemsManager NuGet package.
-        //builder.AddSystemsManager("/app/settings");
+        LambdaLogger.Log("INIT com customer!!!!!!!!!!!!!!!!!!!!!!");
 
-        //var configuration = builder.Build();
-        //services.AddSingleton<IConfiguration>(configuration);
+        #region AWS Services
+        services.AddAWSService<IAmazonDynamoDB>(new AWSOptions { Region = RegionEndpoint.USEast1 });
+        #endregion AWS Services
 
-        //// Example of using the AWSSDK.Extensions.NETCore.Setup NuGet package to add
-        //// the Amazon S3 service client to the dependency injection container.
-        //services.AddAWSService<Amazon.S3.IAmazonS3>();
+        #region Repositories
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        #endregion Repositories
+
+        #region Services
+        services.AddScoped<ICustomerService, CustomerService>();
+        #endregion Services
     }
 }

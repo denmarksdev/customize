@@ -1,4 +1,5 @@
-﻿using Amazon.DynamoDBv2;
+﻿using Amazon;
+using Amazon.DynamoDBv2;
 using Amazon.Runtime;
 
 namespace Customize.Infra.Factories
@@ -20,9 +21,8 @@ namespace Customize.Infra.Factories
 
         public static AmazonDynamoDBClient Build()
         {
-            var creds = new BasicAWSCredentials("xxx", "xxx");
-            var client = new AmazonDynamoDBClient(creds)!;
-
+            var credentials = new BasicAWSCredentials("xxx", "xxx")!;
+            var client = new AmazonDynamoDBClient(credentials, RegionEndpoint.USEast1)!;
             return client;
         }
 

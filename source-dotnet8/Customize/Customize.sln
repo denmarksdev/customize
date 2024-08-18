@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DynamoDB", "DynamoDB", "{30
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Customize.Handlers", "Customize.Handlers\Customize.Handlers.csproj", "{F2F3B451-EC27-4B67-8929-BEFBD282CAAB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customize.Contracts", "Customize.Contracts\Customize.Contracts.csproj", "{D53ED423-F551-491B-86E2-B5BF922F2624}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{F2F3B451-EC27-4B67-8929-BEFBD282CAAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2F3B451-EC27-4B67-8929-BEFBD282CAAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2F3B451-EC27-4B67-8929-BEFBD282CAAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D53ED423-F551-491B-86E2-B5BF922F2624}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D53ED423-F551-491B-86E2-B5BF922F2624}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D53ED423-F551-491B-86E2-B5BF922F2624}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D53ED423-F551-491B-86E2-B5BF922F2624}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

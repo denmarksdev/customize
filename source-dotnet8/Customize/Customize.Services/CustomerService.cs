@@ -70,6 +70,7 @@ namespace Customize.Services
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"List customer error: {ex.Message} \n {nameof(ex.StackTrace)} {ex.StackTrace}");
                 result.Errors.Add(Result.UnmanagedError, $"Erro não gerênciado ao consultar a lista de clientes. paramêtros: {queryParam.Serialize()}.");
                 result.Exception = ex;
             }
@@ -109,12 +110,15 @@ namespace Customize.Services
 
             try
             {
-                var validator = await new UpdateCustomerValidatorAsync(_customerRepository).ValidateAsync(customer);
-                if (!validator.IsValid)
+                var validator = new UpdateCustomerValidatorAsync(_customerRepository);
+                var validatorResult = await validator.ValidateAsync(customer);
+                if (!validatorResult.IsValid)
                 {
-                    result.Errors = validator.Errors.ToDictionary(v => v.PropertyName, v => v.ErrorMessage);
+                    result.Errors = validatorResult.Errors.ToDictionary(v => v.PropertyName, v => v.ErrorMessage);
                     return result;
                 }
+
+                customer.CreatedAt = validator.CreatedAt;
 
                 await _customerRepository.UpdateAsync(customer);
 

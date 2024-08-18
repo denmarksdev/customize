@@ -3,7 +3,6 @@ using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
 using Customize.Domain.DataObject.Query;
 using Customize.Domain.Entities;
-using Customize.Domain.Extensions;
 using Customize.Domain.Repositories;
 using Customize.Infra.Extensions;
 
@@ -74,7 +73,7 @@ namespace Customize.Infra.Repositories
                     customers.AddRange(docs.ConvertAll(d => d.MapToCustomer()));
                 }
 
-            } while (!search.IsDone && customers.Count == 0);
+            } while (!search.IsDone && customers.Count ==  queryParam.Limit);
 
             return new QueryResult<Customer>
             {

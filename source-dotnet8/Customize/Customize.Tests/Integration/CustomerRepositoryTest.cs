@@ -65,6 +65,20 @@ namespace Customize.Tests.Integration
             Assert.Equal(customer.Name, persisted.Name);
         }
 
+        private async Task ShouldDelete(Customer customer)
+        {
+            // Arrange
+            var id = customer.Id;
+
+            // Act
+            await _customerRepository.DeleteAsync(id);
+
+            var persisted = await _customerRepository.FindAsync(customer.Id);
+
+            // Assert
+            Assert.Null(persisted);
+        }
+
         #endregion FlowTest 
 
         /// <summary>
@@ -118,18 +132,41 @@ namespace Customize.Tests.Integration
             Assert.False(queryResult.HasMore);
         }
 
-        private async Task ShouldDelete(Customer customer)
+        /// <summary>
+        /// Simula a listem de cliente e paginação com scroll infinito.
+        /// </summary>
+        [Fact]
+        [Category("Integration test")]
+        public async void ShouldListTeste()
         {
             // Arrange
-            var id = customer.Id;
+            var queryParam = new CustomerQueryParam(new DateRangeQueryParam(start: DateTime.Now, end: DateTime.Now))
+            {
+                Limit = 1
+            };
+
+            var customerResultList = new List<Customer>();
 
             // Act
-            await _customerRepository.DeleteAsync(id);
 
-            var persisted = await _customerRepository.FindAsync(customer.Id);
+            /* Valida paginação */
+            var customerRepository = new CustomerRepository(DynamoDBFactory.Build());
+            var queryResult = await customerRepository.ListAsync(queryParam);
+            customerResultList.AddRange(queryResult.Items);
+
+            queryParam.PaginationToken = queryResult.LastKey;
+
+            queryResult = await customerRepository.ListAsync(queryParam);
+            customerResultList.AddRange(queryResult.Items);
+
+            queryParam.PaginationToken = queryResult.LastKey;
+
+            queryResult = await customerRepository.ListAsync(queryParam);
+            customerResultList.AddRange(queryResult.Items);
 
             // Assert
-            Assert.Null(persisted);
+            Assert.Equal(2, customerResultList.Count);
+            Assert.False(queryResult.HasMore);
         }
 
         #region Setup

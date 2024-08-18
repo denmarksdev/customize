@@ -4,6 +4,9 @@ using Amazon.Lambda.Core;
 using Customize.Handlers.Base;
 using Amazon.Lambda.APIGatewayEvents;
 using Customize.Domain.Extensions;
+using Customize.Domain.Services;
+using Customize.Contracts.Customer;
+using Customize.Contracts.Extensions;
 
 namespace Customize.Handlers.API
 {
@@ -11,47 +14,75 @@ namespace Customize.Handlers.API
     {
         [LambdaFunction(ResourceName = "CustomerListAPI")]
         [RestApi(LambdaHttpMethod.Get, "/api/v1/customers")]
-        public IHttpResult Get(ILambdaContext context)
+        public async Task<IHttpResult> Get(ILambdaContext context, APIGatewayProxyRequest request , [FromServices] ICustomerService customerService)
         {
-            context.Logger.LogInformation("Handling the 'Get' Request");
+            context.Logger.LogInformation($"List Customer {request.QueryStringParameters?.Serialize()}");
 
-            return HttpResults.Ok("GET LIST");
+            var customerQueryParam = request.QueryStringParameters?
+                .MapListCustomerRequest()
+                .MapCustomerQueryParam();
+
+            if (customerQueryParam == null) return HttpResults.BadRequest($"Payload para consulta de clientes inválido. {request.Body}");
+
+            var listResult = await customerService.ListAsync(customerQueryParam);
+
+            return MapResult(listResult);
         }
 
         [LambdaFunction(ResourceName = "CustomerGetByIdAPI")]
         [RestApi(LambdaHttpMethod.Get, "/api/v1/customers/{id}")]
-        public IHttpResult GetById(ILambdaContext context, string id)
+        public async Task <IHttpResult> GetById(ILambdaContext context, string id, [FromServices] ICustomerService customerService)
         {
-            context.Logger.LogInformation("Handling the 'Get' Request");
+            context.Logger.LogInformation($"GET customer id {id}");
 
-            return HttpResults.Ok($"GET {id}");
+            var findResult = await customerService.FindAsync(id);
+
+            return MapResult(findResult);
         }
 
         [LambdaFunction(ResourceName = "CustomerPostAPI")]
         [RestApi(LambdaHttpMethod.Post, "/api/v1/customers")]
-        public IHttpResult Post(APIGatewayProxyRequest request, ILambdaContext context)
+        public async Task<IHttpResult> Post([FromBody] APIGatewayProxyRequest request, ILambdaContext context, [FromServices] ICustomerService customerService)
         {
-            context.Logger.LogInformation($"Handling the 'POST' {request.Serialize()}");
+            if (request == null) return HttpResults.BadRequest("Payload para novo cliente inválido.");
 
-            return HttpResults.Ok("POST");
+            context.Logger.LogInformation($"New customer {request?.Serialize()}");
+
+            var customer = request!.Body.Deserialize<PostCustomerRequest>()?.Map();
+
+            if (customer == null) return HttpResults.BadRequest($"Payload para novo cliente inválido. {request.Serialize()}");
+
+            var saveResult = await customerService.SaveAsync(customer);
+
+            return MapResult(saveResult);
         }
 
         [LambdaFunction(ResourceName = "CustomerPutAPI")]
         [RestApi(LambdaHttpMethod.Put, "/api/v1/customers")]
-        public IHttpResult Put(ILambdaContext context)
+        public async Task<IHttpResult> Put([FromBody] APIGatewayProxyRequest request, ILambdaContext context, [FromServices] ICustomerService customerService)
         {
-            context.Logger.LogInformation("Handling the 'POST' Request");
+            if (request == null) return HttpResults.BadRequest("Payload para novo cliente inválido.");
 
-            return HttpResults.Ok("PUT");
+            context.Logger.LogInformation($"Update customer {request?.Serialize()}");
+
+            var customer = request!.Body.Deserialize<PutCustomerRequest>()?.Map();
+
+            if (customer == null) return HttpResults.BadRequest($"Payload para novo cliente inválido. {request.Serialize()}");
+
+            var saveResult = await customerService.UpdateAsync(customer);
+
+            return MapResult(saveResult);
         }
 
         [LambdaFunction(ResourceName = "CustomerDeleteAPI")]
-        [RestApi(LambdaHttpMethod.Delete, "/api/v1/customers")]
-        public IHttpResult Delete(ILambdaContext context)
+        [RestApi(LambdaHttpMethod.Delete, "/api/v1/customers/{id}")]
+        public async Task<IHttpResult> Delete(ILambdaContext context, string id, [FromServices] ICustomerService customerService)
         {
-            context.Logger.LogInformation("Handling the 'POST' Request");
+            context.Logger.LogInformation($"Delete customer ID {id}");
 
-            return HttpResults.Ok("Delete");
+            var deleteResult = await customerService.DeleteAsync(id);
+
+            return MapResult(deleteResult);
         }
     }
 }
