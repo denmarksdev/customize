@@ -2,9 +2,9 @@
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
-namespace Customize.Handlers.API.Base
+namespace Customize.Handlers.Base
 {
-    public abstract class BaseAPI
+    public abstract class BaseLambda
     {
     }
 }

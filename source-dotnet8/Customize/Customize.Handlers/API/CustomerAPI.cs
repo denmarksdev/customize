@@ -1,11 +1,13 @@
 ﻿using Amazon.Lambda.Annotations.APIGateway;
 using Amazon.Lambda.Annotations;
 using Amazon.Lambda.Core;
-using Customize.Handlers.API.Base;
+using Customize.Handlers.Base;
+using Amazon.Lambda.APIGatewayEvents;
+using Customize.Domain.Extensions;
 
 namespace Customize.Handlers.API
 {
-    public class CustomerAPI : BaseAPI
+    public class CustomerAPI : BaseLambda
     {
         [LambdaFunction(ResourceName = "CustomerListAPI")]
         [RestApi(LambdaHttpMethod.Get, "/api/v1/customers")]
@@ -27,9 +29,9 @@ namespace Customize.Handlers.API
 
         [LambdaFunction(ResourceName = "CustomerPostAPI")]
         [RestApi(LambdaHttpMethod.Post, "/api/v1/customers")]
-        public IHttpResult Post(ILambdaContext context)
+        public IHttpResult Post(APIGatewayProxyRequest request, ILambdaContext context)
         {
-            context.Logger.LogInformation("Handling the 'POST' Request");
+            context.Logger.LogInformation($"Handling the 'POST' {request.Serialize()}");
 
             return HttpResults.Ok("POST");
         }
