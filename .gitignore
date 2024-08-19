@@ -3,3 +3,4 @@ source-dotnet8/Deploy/test-lambda-stream.json
 source-dotnet8/Deploy/test-lambda-stream.cmd
 source-dotnet8/Deploy/deploy-trust-customize-role.bat
 source-dotnet8/Deploy/customize-role-policy.json
+/customize-app/src/environments/enviroment.ts
