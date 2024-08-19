@@ -22,7 +22,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
   imports: [
     RouterModule,
     MatTableModule,
-        MatButtonModule,
+    MatButtonModule,
     MatIconModule,
     MatDatepickerModule,
     MatInputModule,
@@ -43,14 +43,14 @@ export class CustomerListComponent implements OnInit {
   dataSource: Customer[];
   query: ListCustomerRequest
   isLoading: boolean = false;
-  
+
 
   readonly range = new FormGroup({
     start: new FormControl<Date | null>(new Date()),
     end: new FormControl<Date | null>(new Date()),
   });
 
-  constructor(private customerService: CustomerService, private _loadData: () => void) {
+  constructor(private customerService: CustomerService) {
     this.dataSource = [],
       this.query = {
         start: new Date(),
@@ -59,32 +59,43 @@ export class CustomerListComponent implements OnInit {
         name: '',
         id: ''
       }
-
-    this._loadData = () => {
-      this.isLoading = true;
-      if (this.range.valid) {
-
-        var start = this.range.get('start')?.value
-        var end = this.range.get('end')?.value
-
-        this.query.start = start as Date;
-        this.query.end = end as Date;
-
-        this.customerService.list(this.query).subscribe(response => {
-          if (response.success) {
-            this.isLoading = false;
-            this.dataSource = response.data.items
-          }
-        })
-      }
-    }
   }
 
   onSubmit() {
-    this._loadData()
+    this.isLoading = true;
+    if (this.range.valid) {
+
+      var start = this.range.get('start')?.value
+      var end = this.range.get('end')?.value
+
+      this.query.start = start as Date;
+      this.query.end = end as Date;
+
+      this.customerService.list(this.query).subscribe(response => {
+        if (response.success) {
+          this.isLoading = false;
+          this.dataSource = response.data.items
+        }
+      })
+    }
   }
 
   ngOnInit(): void {
-    this._loadData()
+    this.isLoading = true;
+    if (this.range.valid) {
+
+      var start = this.range.get('start')?.value
+      var end = this.range.get('end')?.value
+
+      this.query.start = start as Date;
+      this.query.end = end as Date;
+
+      this.customerService.list(this.query).subscribe(response => {
+        if (response.success) {
+          this.isLoading = false;
+          this.dataSource = response.data.items
+        }
+      })
+    }
   }
 }

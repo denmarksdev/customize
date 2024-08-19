@@ -8,6 +8,7 @@ using Customize.Infra.Repositories;
 using Customize.Domain.Services;
 using Amazon.Lambda.Core;
 using Customize.Services;
+using Amazon.S3;
 
 namespace Customize.Handlers;
 
@@ -16,19 +17,14 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        //// Example of creating the IConfiguration object and
-        //// adding it to the dependency injection container.
-        //var builder = new ConfigurationBuilder()
-        //                    .AddJsonFile("appsettings.json", true);
-
-        LambdaLogger.Log("INIT com customer!!!!!!!!!!!!!!!!!!!!!!");
-
         #region AWS Services
         services.AddAWSService<IAmazonDynamoDB>(new AWSOptions { Region = RegionEndpoint.USEast1 });
+        services.AddAWSService<IAmazonS3>(new AWSOptions { Region = RegionEndpoint.USEast1 });
         #endregion AWS Services
 
         #region Repositories
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IFileRepository, FileRepositoryS3>();
         #endregion Repositories
 
         #region Services
