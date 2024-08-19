@@ -1,34 +1,90 @@
-import { Component } from '@angular/core';
-import {MatTableModule} from '@angular/material/table';
-import { Customer, CustomerView } from '../../model/customer';
+import { Component, OnInit, Injectable } from '@angular/core';
+import { MatTableModule } from '@angular/material/table';
+import { Customer } from '../../model/customer';
 import { PageTitleComponent } from '../page-title/page-title.component';
 import { MatButtonModule } from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { CustomerService } from '../../services/customer-service';
+import { ListCustomerRequest } from '../../model/customer-query';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
-const ELEMENT_DATA: CustomerView[] = [
-  {id: '1', name: 'Denis',   cellphone: '5511999995555', email: 'teste@teste.com', createdAt: new Date(2024,8,18), action:''},
-  {id: '2', name: 'Maria',   cellphone: '5511999995555', email: 'teste@teste.com',createdAt: new Date(2024,8,18), action:''},
-  {id: '3', name: 'João',    cellphone: '5511999995555', email: 'teste@teste.com',createdAt: new Date(2024,8,18), action:''},
-  {id: '4', name: 'Pedro',   cellphone: '5511999995555', email: 'teste@teste.com',createdAt: new Date(2024,8,18), action:''},
-  {id: '5', name: 'Paulo',   cellphone: '5511999995555', email: 'teste@teste.com',createdAt: new Date(2024,8,18), action:''},
-  {id: '6', name: 'Tiago',   cellphone: '5511999995555', email: 'teste@teste.com',createdAt: new Date(2024,8,18), action:''},
-  {id: '7', name: 'Fernanda',cellphone: '5511999995555', email: 'teste@teste.com',createdAt: new Date(2024,8,18), action:''},
-  {id: '8', name: 'Amanda',  cellphone: '5511999995555', email: 'teste@teste.com',createdAt: new Date(2024,8,18), action:''},
-  {id: '9', name: 'Paulo',   cellphone: '5511999995555', email: 'teste@teste.com',createdAt: new Date(2024,8,18), action:''},
-  {id: '10', name: 'Bruna',  cellphone: '5511999995555', email: 'teste@teste.com',createdAt: new Date(2024,8,18), action:''},
-];
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-list',
   standalone: true,
-  imports: [RouterModule,MatTableModule, PageTitleComponent, MatButtonModule, MatIconModule],
+  imports: [
+    RouterModule,
+    MatTableModule,
+        MatButtonModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatProgressBarModule,
+    PageTitleComponent,
+  ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.scss'
 })
-export class CustomerListComponent {
+
+@Injectable()
+export class CustomerListComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'email', 'cellphone', 'createdAt', 'action'];
-  dataSource = ELEMENT_DATA;
-  clickedRows = new Set<Customer>();
+  dataSource: Customer[];
+  query: ListCustomerRequest
+  isLoading: boolean = false;
+  
+
+  readonly range = new FormGroup({
+    start: new FormControl<Date | null>(new Date()),
+    end: new FormControl<Date | null>(new Date()),
+  });
+
+  constructor(private customerService: CustomerService, private _loadData: () => void) {
+    this.dataSource = [],
+      this.query = {
+        start: new Date(),
+        end: new Date(),
+        limit: 1,
+        name: '',
+        id: ''
+      }
+
+    this._loadData = () => {
+      this.isLoading = true;
+      if (this.range.valid) {
+
+        var start = this.range.get('start')?.value
+        var end = this.range.get('end')?.value
+
+        this.query.start = start as Date;
+        this.query.end = end as Date;
+
+        this.customerService.list(this.query).subscribe(response => {
+          if (response.success) {
+            this.isLoading = false;
+            this.dataSource = response.data.items
+          }
+        })
+      }
+    }
+  }
+
+  onSubmit() {
+    this._loadData()
+  }
+
+  ngOnInit(): void {
+    this._loadData()
+  }
 }

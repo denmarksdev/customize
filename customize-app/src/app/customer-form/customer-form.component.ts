@@ -5,19 +5,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { PageTitleComponent } from '../page-title/page-title.component';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-customer-form',
   standalone: true,
-  imports: [RouterModule,FormsModule, ReactiveFormsModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatProgressBarModule],
+  imports: [RouterModule,FormsModule, ReactiveFormsModule, MatSelectModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatProgressBarModule, PageTitleComponent],
   templateUrl: './customer-form.component.html',
   styleUrl: './customer-form.component.scss',
 })
 export class CustomerFormComponent implements OnInit {
 
   customerForm: FormGroup
-  isLoading: boolean = true
+  isLoading: boolean = false
 
   constructor(private formBuilder: FormBuilder) {
     this.customerForm = this.formBuilder.group({
@@ -31,6 +32,8 @@ export class CustomerFormComponent implements OnInit {
 
   onSubmit() {
     if (this.customerForm.valid) {
+
+      this.isLoading = true;
       const newCustomer = this.customerForm.value;
       console.log('Customer registered: ', newCustomer);
       // Aqui você pode adicionar a lógica para enviar o cliente para um servidor/back-end

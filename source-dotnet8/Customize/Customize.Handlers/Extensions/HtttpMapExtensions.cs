@@ -10,10 +10,13 @@ namespace Customize.Handlers.Extensions
         {
             var jsonData = response.Serialize();
 
-            if (response.Success)
-                return HttpResults.Ok(jsonData);
+            var result = response.Success ? HttpResults.Ok(jsonData) : HttpResults.BadRequest(jsonData);
 
-            return HttpResults.BadRequest(jsonData);
+            result.AddHeader("Access-Control-Allow-Headers", "*");
+            result.AddHeader("Access-Control-Allow-Origin", "*");
+            result.AddHeader("Access-Control-Allow-Methods", "OPTIONS,POST,GET,DELETE,PUT");
+
+            return result;
         }
     }
 }

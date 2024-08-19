@@ -31,3 +31,22 @@
 .button-grid{
     width: 10px;
 }
+
+.filter-container-action {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center	;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.filter-action {
+  margin: 10px;
+}
