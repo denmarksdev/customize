@@ -32,7 +32,7 @@ namespace Customize.Contracts.Extensions
         {
             return new BaseResponse
             {
-                Success = result.Sucess,
+                Success = result.Success,
                 Errors = result.Errors,
                 Message = message
             };
@@ -42,7 +42,7 @@ namespace Customize.Contracts.Extensions
         {
             return new BaseResponse<T>
             {
-                Success = result.Sucess,
+                Success = result.Success,
                 Errors = result.Errors,
                 Message = message,
                 Data = result.Data

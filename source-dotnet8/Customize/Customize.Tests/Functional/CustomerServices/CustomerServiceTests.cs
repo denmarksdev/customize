@@ -28,7 +28,7 @@ namespace Customize.Tests.Functional.CustomerServices
 
             // Assert
             Assert.NotNull(result);
-            Assert.False(result.Sucess);
+            Assert.False(result.Success);
             Assert.Equal("Id do cliente é obrigatório.", result.Errors[nameof(Customer.Id)]);
             Assert.Equal("Nome do cliente é obrigatório.", result.Errors[nameof(Customer.Name)]);
             Assert.Equal("Número do celular inválido. Pais, DD, e numero são obrigatórios.", result.Errors[nameof(Customer.Cellphone)]);
@@ -58,7 +58,7 @@ namespace Customize.Tests.Functional.CustomerServices
 
             // Assert
             Assert.NotNull(result);
-            Assert.True(result.Sucess);
+            Assert.True(result.Success);
             Assert.Empty(result.Errors);
 
             _mocks.CustomerRepositoryMock.Verify(m => m.SaveAsync(customer), Times.Once);
@@ -91,7 +91,7 @@ namespace Customize.Tests.Functional.CustomerServices
             // Assert
             Assert.NotNull(result);
             Assert.NotNull(result.Data);
-            Assert.True(result.Sucess);
+            Assert.True(result.Success);
             Assert.Equal(3, result.Data.Items.Count);
 
             _mocks.CustomerRepositoryMock.Verify(m => m.ListAsync(queryParam), Times.Once);
@@ -124,7 +124,7 @@ namespace Customize.Tests.Functional.CustomerServices
             // Assert
             Assert.NotNull(result);
             Assert.NotNull(result.Data);
-            Assert.True(result.Sucess);
+            Assert.True(result.Success);
             Assert.Equal(customer.Name, result.Data.Name);
 
             _mocks.CustomerRepositoryMock.Verify(m => m.FindAsync(customer.Id), Times.Once);
@@ -152,7 +152,7 @@ namespace Customize.Tests.Functional.CustomerServices
 
             // Assert
             Assert.NotNull(result);
-            Assert.False(result.Sucess);
+            Assert.False(result.Success);
             Assert.Single(result.Errors);
             Assert.Contains("Cliente não foi encontrado. ID:", result.Errors[nameof(Customer.Id)]);
 
@@ -181,7 +181,7 @@ namespace Customize.Tests.Functional.CustomerServices
 
             // Assert
             Assert.NotNull(result);
-            Assert.True(result.Sucess);
+            Assert.True(result.Success);
             Assert.Empty(result.Errors);
 
             _mocks.CustomerRepositoryMock.Verify(m => m.FindAsync(customer.Id), Times.Once);
@@ -210,7 +210,7 @@ namespace Customize.Tests.Functional.CustomerServices
 
             // Assert
             Assert.NotNull(result);
-            Assert.False(result.Sucess);
+            Assert.False(result.Success);
             Assert.Single(result.Errors);
             Assert.Contains("Cliente não foi encontrado. ID:", result.Errors[nameof(Customer.Id)]);
 
@@ -239,7 +239,7 @@ namespace Customize.Tests.Functional.CustomerServices
 
             // Assert
             Assert.NotNull(result);
-            Assert.True(result.Sucess);
+            Assert.True(result.Success);
             Assert.Empty(result.Errors);
 
             _mocks.CustomerRepositoryMock.Verify(m => m.FindAsync(customer.Id), Times.Once);

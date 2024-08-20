@@ -4,7 +4,7 @@
     {
         public const string UnmanagedError = "Erro não gerênciado";
 
-        public bool Sucess { get; set; }
+        public bool Success { get; set; }
         public Dictionary<string, string> Errors { get; set; } = [];
         public Exception? Exception { get; set; }
     }

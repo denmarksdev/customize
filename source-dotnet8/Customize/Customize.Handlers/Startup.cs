@@ -6,7 +6,6 @@ using Amazon;
 using Customize.Domain.Repositories;
 using Customize.Infra.Repositories;
 using Customize.Domain.Services;
-using Amazon.Lambda.Core;
 using Customize.Services;
 using Amazon.S3;
 
@@ -29,6 +28,7 @@ public class Startup
 
         #region Services
         services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IProcessEntityChangesServices, ProcessEntityChangesServices>();
         #endregion Services
     }
 }

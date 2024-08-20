@@ -30,7 +30,7 @@ namespace Customize.Services
 
                 await _customerRepository.DeleteAsync(id);
 
-                result.Sucess = true;
+                result.Success = true;
             }
             catch (Exception ex)
             {
@@ -48,7 +48,7 @@ namespace Customize.Services
             try
             {
                 result.Data = await _customerRepository.FindAsync(id);
-                result.Sucess = true;
+                result.Success = true;
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace Customize.Services
             try
             {
               result.Data = await _customerRepository.ListAsync(queryParam);
-              result.Sucess = true;
+              result.Success = true;
             }
             catch (Exception ex)
             {
@@ -93,7 +93,7 @@ namespace Customize.Services
 
                 await _customerRepository.SaveAsync(customer);
 
-                result.Sucess = true;
+                result.Success = true;
             }
             catch (Exception ex)
             {
@@ -122,7 +122,7 @@ namespace Customize.Services
 
                 await _customerRepository.UpdateAsync(customer);
 
-                result.Sucess = true;
+                result.Success = true;
             }
             catch (Exception ex)
             {

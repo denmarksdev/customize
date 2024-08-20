@@ -1,16 +1,22 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 
 namespace Customize.Domain.Extensions
 {
     public static class JsonExtensions
     {
-        private static JsonSerializerOptions Options()
+        private static JsonSerializerSettings Options()
         {
-            var options = new JsonSerializerOptions
+            DefaultContractResolver contractResolver = new DefaultContractResolver
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Converters = { new JsonStringEnumConverter() }
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+
+            var options = new JsonSerializerSettings
+            {
+                Converters = { new StringEnumConverter () },
+                ContractResolver = contractResolver 
             };
 
             return options;
@@ -19,12 +25,12 @@ namespace Customize.Domain.Extensions
 
         public static string Serialize(this object @object)
         {
-            return JsonSerializer.Serialize(@object, Options());
+            return  JsonConvert.SerializeObject(@object, Options());
         }
 
         public static T? Deserialize<T>(this string jsonString)
         {
-            return JsonSerializer.Deserialize<T>(jsonString, Options());
+            return JsonConvert.DeserializeObject<T>(jsonString, Options());
         }
     }
 }

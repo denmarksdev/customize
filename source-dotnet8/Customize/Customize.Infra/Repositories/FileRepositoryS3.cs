@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Customize.Domain.DataObject;
+using Customize.Domain.DataObject.File;
 using Customize.Domain.Repositories;
 
 namespace Customize.Infra.Repositories
@@ -14,7 +15,7 @@ namespace Customize.Infra.Repositories
             _amazonS3 = amazonS3;
         }
 
-        public async Task<Result> PutAsync(string key, string bucketName, string message) 
+        public async Task<Result> PutAsync(PutFile input) 
         {
             var result = new Result();
 
@@ -22,17 +23,17 @@ namespace Customize.Infra.Repositories
             {
                 var putRequest = new PutObjectRequest
                 {
-                    BucketName = bucketName,
-                    Key = key,
-                    ContentBody = message
+                    BucketName = input.BucketName,
+                    Key = input.Key,
+                    ContentBody = input.Message
                 };
 
                 var response = await _amazonS3.PutObjectAsync(putRequest);
-
-                result.Sucess = response.HttpStatusCode == System.Net.HttpStatusCode.OK;
-                if (!result.Sucess) 
+                
+                result.Success = response.HttpStatusCode == System.Net.HttpStatusCode.OK;
+                if (!result.Success) 
                 {
-                    result.Errors.Add("Resosta S3", response.HttpStatusCode.ToString());
+                    result.Errors.Add("Reposta S3", response.HttpStatusCode.ToString());
                 }
             }
             catch (Exception ex)
