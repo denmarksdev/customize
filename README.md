@@ -16,7 +16,8 @@ Aplicação para  Gestão de clientes e contas
 ![image](https://github.com/user-attachments/assets/21c52c18-b332-4276-95b1-66dbec28c983)
 
 # Estrutura do projeto
-![image](https://github.com/user-attachments/assets/19bf999b-592b-4684-a256-88edbe5b5a4e)
+![image](https://github.com/user-attachments/assets/2f092810-3be3-4ed8-af98-b473059c633d)
+
 
 # Customize APP
 ## Clientes
