@@ -3,3 +3,8 @@ export interface ServerError {
     success: boolean,
     message: string
 }
+
+export interface ServerResponse<T> extends ServerError 
+{
+    data:T
+}

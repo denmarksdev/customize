@@ -1,4 +1,5 @@
 import { Customer } from "./customer";
+import { ServerResponse } from "./server-error";
 
 export interface ListCustomerRequest {
     id?: string;
@@ -9,11 +10,7 @@ export interface ListCustomerRequest {
     paginationToken?: string
 }
 
-export interface ListCustomerResponse {
-    data: DataResponse<Customer>;
-    message?: string;
-    success:boolean;
-    errors?: Map<string, string>;
+export interface ListCustomerResponse extends ServerResponse<DataResponse<Customer>> {
 }
 
 export interface DataResponse<T> {

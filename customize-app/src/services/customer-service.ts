@@ -5,7 +5,7 @@ import { ListCustomerRequest, ListCustomerResponse } from '../model/customer-que
 import { environment } from '../environments/enviroment';
 import { BaseCustomer, Customer } from '../model/customer';
 import { catchError, Observable, throwError } from 'rxjs';
-import { ServerError } from '../model/server-error';
+import { ServerError, ServerResponse } from '../model/server-error';
 
 const pipe = new DatePipe('en-US');
 
@@ -13,6 +13,12 @@ const pipe = new DatePipe('en-US');
   providedIn: 'root'
 })
 export class CustomerService {
+  customers: Customer[]
+
+  constructor(private http: HttpClient) {
+    this.customers = [];
+  }
+
   save(newCustomer: BaseCustomer) {
     return this.http.post(environment.baseurl + `v1/customers`, newCustomer)
       .pipe(
@@ -20,10 +26,18 @@ export class CustomerService {
       );
   }
 
-  customers: Customer[]
+  update(newCustomer: BaseCustomer) {
+    return this.http.put(environment.baseurl + `v1/customers`, newCustomer)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 
-  constructor(private http: HttpClient) {
-    this.customers = [];
+  find(id: string) {
+    return this.http.get<ServerResponse<Customer>>(environment.baseurl + `v1/customers/${id}`)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   list(query: ListCustomerRequest): Observable<ListCustomerResponse> {
@@ -51,7 +65,7 @@ export class CustomerService {
 
     serverError = {
       errors,
-      message : error.message,
+      message: error.message,
       success: false
     }
 
