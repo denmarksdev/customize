@@ -1,7 +1,7 @@
 # Customize
 Aplicação para  Gestão de clientes e contas
 
-# Fluxo Macro Clientes
+# Visão geral do cadastro de clientes
 ![image](https://github.com/user-attachments/assets/479fa6d4-17cf-49a9-8818-c59e9b35013e)
 
 # Diagrama de sequência Clientes
