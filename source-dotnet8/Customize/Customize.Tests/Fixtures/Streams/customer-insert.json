@@ -1,0 +1,120 @@
+﻿{
+  "records": [
+    {
+      "eventSourceArn": "arn:aws:dynamodb:us-east-1:637423587776:table/customize/stream/2024-08-18T03:24:21.399",
+      "awsRegion": "us-east-1",
+      "dynamodb": {
+        "approximateCreationDateTime": "2024-08-19T17:28:37Z",
+        "keys": {
+          "SK": {
+            "b": null,
+            "bool": null,
+            "bs": null,
+            "l": null,
+            "m": null,
+            "n": null,
+            "ns": null,
+            "null": null,
+            "s": "CUST#",
+            "ss": null
+          },
+          "PK": {
+            "b": null,
+            "bool": null,
+            "bs": null,
+            "l": null,
+            "m": null,
+            "n": null,
+            "ns": null,
+            "null": null,
+            "s": "CUST#a568aa74-c710-4c43-a436-da60b7172240",
+            "ss": null
+          }
+        },
+        "newImage": {
+          "Email": {
+            "b": null,
+            "bool": null,
+            "bs": null,
+            "l": null,
+            "m": null,
+            "n": null,
+            "ns": null,
+            "null": null,
+            "s": "denmarksdev@gmail.com",
+            "ss": null
+          },
+          "CreatedAt": {
+            "b": null,
+            "bool": null,
+            "bs": null,
+            "l": null,
+            "m": null,
+            "n": null,
+            "ns": null,
+            "null": null,
+            "s": "2024-08-19T17:28:37.491Z",
+            "ss": null
+          },
+          "SK": {
+            "b": null,
+            "bool": null,
+            "bs": null,
+            "l": null,
+            "m": null,
+            "n": null,
+            "ns": null,
+            "null": null,
+            "s": "CUST#",
+            "ss": null
+          },
+          "Cellphone": {
+            "b": null,
+            "bool": null,
+            "bs": null,
+            "l": null,
+            "m": null,
+            "n": null,
+            "ns": null,
+            "null": null,
+            "s": "5511968646970",
+            "ss": null
+          },
+          "PK": {
+            "b": null,
+            "bool": null,
+            "bs": null,
+            "l": null,
+            "m": null,
+            "n": null,
+            "ns": null,
+            "null": null,
+            "s": "CUST#a568aa74-c710-4c43-a436-da60b7172240",
+            "ss": null
+          },
+          "Name": {
+            "b": null,
+            "bool": null,
+            "bs": null,
+            "l": null,
+            "m": null,
+            "n": null,
+            "ns": null,
+            "null": null,
+            "s": "denis",
+            "ss": null
+          }
+        },
+        "oldImage": null,
+        "sequenceNumber": "7171500000000087013360736",
+        "sizeBytes": 190,
+        "streamViewType": "NEW_AND_OLD_IMAGES"
+      },
+      "eventID": "f758874e716be391f50bfe9df2de084a",
+      "eventName": "INSERT",
+      "eventSource": "aws:dynamodb",
+      "eventVersion": "1.1",
+      "userIdentity": null
+    }
+  ]
+}

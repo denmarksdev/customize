@@ -1,0 +1,52 @@
+.demo-table {
+  width: 100%;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+  border-color: currentColor;
+}
+
+.demo-row-is-clicked {
+  font-weight: bold;
+}
+
+.action-container {
+    display: flex;
+    justify-content: flex-end;
+    margin: 15px;
+}
+
+.action-grid-container {
+    display: flex;
+    margin: 10px;
+    gap: 10px;
+
+}
+ 
+.button-grid{
+    width: 10px;
+}
+
+.filter-container-action {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center	;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.filter-action {
+  margin: 10px;
+}
