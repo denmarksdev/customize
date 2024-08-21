@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit, Injectable, inject } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { Customer } from '../../model/customer';
 import { PageTitleComponent } from '../page-title/page-title.component';
@@ -10,6 +10,7 @@ import { ListCustomerRequest } from '../../model/customer-query';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common'
+import { DialogData, ModalComponent } from '../modal/modal.component';
 
 // TODO: refatorar componente dedicado.
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -17,6 +18,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { PhoneFormatterPipe } from '../../pipes/phone-formatter.pipe';
+import { MatDialog } from '@angular/material/dialog';
+import { ServerError } from '../../model/server-error';
+import { catchError, throwError } from 'rxjs';
 
 
 @Component({
@@ -50,11 +54,12 @@ export class CustomerListComponent implements OnInit {
   query: ListCustomerRequest
   isLoading: boolean = false;
 
-
   readonly range = new FormGroup({
     start: new FormControl<Date | null>(new Date()),
     end: new FormControl<Date | null>(new Date()),
   });
+
+  readonly dialog = inject(MatDialog);
 
   constructor(private customerService: CustomerService) {
     this.dataSource = [],
@@ -65,6 +70,34 @@ export class CustomerListComponent implements OnInit {
         name: '',
         id: ''
       }
+  }
+
+  openDialog(id: string): void {
+    const data: DialogData = {
+      title: "Excluir cliente",
+      message: "Confirma a exclusão?"
+    }
+
+    const dialogRef = this.dialog.open(ModalComponent, { data });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.isLoading = true
+        this.customerService.delete(id).pipe(
+          catchError((error: ServerError) => {
+            console.log('Find customer error', error.errors)
+            this.isLoading = false
+            return throwError(() => error);
+          })
+        )
+          .subscribe(_ => {
+            this.ngOnInit();
+          }
+          
+        );
+      }
+    });
+
   }
 
   onSubmit() {

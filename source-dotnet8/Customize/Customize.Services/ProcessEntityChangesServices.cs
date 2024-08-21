@@ -48,7 +48,7 @@ namespace Customize.Services
                         selectedCustomer = newCustomer!;
                         break;
                     case ModifyEvent:
-                        selectedCustomer = oldCustomer!;
+                        selectedCustomer = newCustomer ?? oldCustomer!;
                         break;
                     case RemoveEvent:
                         selectedCustomer = (oldCustomer ?? newCustomer)!;

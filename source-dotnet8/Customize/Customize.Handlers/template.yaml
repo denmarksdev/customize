@@ -214,7 +214,7 @@ Resources:
         RootOptions:
           Type: Api
           Properties:
-            Path: /api/v1/customers
+            Path: /api/v1/customers/*
             Method: OPTIONS
 Outputs:
   ApiURL:

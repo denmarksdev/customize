@@ -86,7 +86,7 @@ namespace Customize.Handlers.API
         }
 
         [LambdaFunction(ResourceName = "CustomerOptionsAPI")]
-        [RestApi(LambdaHttpMethod.Options, "/api/v1/customers")]
+        [RestApi(LambdaHttpMethod.Options, "/api/v1/customers/*")]
         public IHttpResult Options(ILambdaContext _)
         {
             return Options();

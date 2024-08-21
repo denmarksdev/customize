@@ -33,6 +33,13 @@ export class CustomerService {
       );
   }
 
+  delete(id: string) {
+    return this.http.delete(environment.baseurl + `v1/customers/${id}`)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   find(id: string) {
     return this.http.get<ServerResponse<Customer>>(environment.baseurl + `v1/customers/${id}`)
       .pipe(
@@ -41,7 +48,6 @@ export class CustomerService {
   }
 
   list(query: ListCustomerRequest): Observable<ListCustomerResponse> {
-
     const params = new HttpParams()
       .set('limit', query.limit)
       .set('start', pipe.transform(query.start, 'yyyy-MM-dd') ?? '')

@@ -55,10 +55,9 @@ export class CustomerFormComponent implements OnInit {
         return;
       }
 
+      this.isLoading = true;
       this.title = "Atualizar cliente"
       this.action = "Atualizar"
-
-      this.isLoading = true;
 
       this.customerService.find(customerId)
         .pipe(
