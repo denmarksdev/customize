@@ -32,7 +32,7 @@ Aplicação para  Gestão de clientes e contas
 ![image](https://github.com/user-attachments/assets/f0320550-ceaa-4748-8083-944a630f55f2)
 
 # Estratégia implementação front e backend
-Na raiz do projeto separei em trê pastar, inciando o backend em C# e frontend em angular.
+Na raiz do projeto separei em três pastas, inciando o backend em C# e frontend em angular.
 A segunda etapa é migrar o backend para java.
 
 ![image](https://github.com/user-attachments/assets/0cddf21f-a50f-4435-b7f1-5586a84e61df)
