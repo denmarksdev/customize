@@ -1,0 +1,223 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: An AWS Serverless Application. This template is partially managed by Amazon.Lambda.Annotations (v1.5.0.0).
+Resources:
+  CustomerListAPI:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootGet
+      SyncedEventProperties:
+        RootGet:
+          - Path
+          - Method
+    Properties:
+      Runtime: dotnet8
+      CodeUri: .
+      MemorySize: 512
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
+      PackageType: Zip
+      Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_Get_Generated::Get
+      Events: {RootGet: {Type: Api, Properties: {Path: /api/v1/customers, Method: GET}}}
+  CustomerGetByIdAPI:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootGet
+      SyncedEventProperties:
+        RootGet:
+          - Path
+          - Method
+    Properties:
+      Runtime: dotnet8
+      CodeUri: .
+      MemorySize: 512
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
+      PackageType: Zip
+      Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_GetById_Generated::GetById
+      Events:
+        RootGet:
+          Type: Api
+          Properties:
+            Path: /api/v1/customers/{id}
+            Method: GET
+  CustomerPostAPI:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootPost
+      SyncedEventProperties:
+        RootPost:
+          - Path
+          - Method
+    Properties:
+      Runtime: dotnet8
+      CodeUri: .
+      MemorySize: 512
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
+      PackageType: Zip
+      Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_Post_Generated::Post
+      Events:
+        RootPost:
+          Type: Api
+          Properties:
+            Path: /api/v1/customers
+            Method: POST
+  CustomerPutAPI:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootPut
+      SyncedEventProperties:
+        RootPut:
+          - Path
+          - Method
+    Properties:
+      Runtime: dotnet8
+      CodeUri: .
+      MemorySize: 512
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
+      PackageType: Zip
+      Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_Put_Generated::Put
+      Events:
+        RootPut:
+          Type: Api
+          Properties:
+            Path: /api/v1/customers
+            Method: PUT
+  CustomerDeleteAPI:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootDelete
+      SyncedEventProperties:
+        RootDelete:
+          - Path
+          - Method
+    Properties:
+      Runtime: dotnet8
+      CodeUri: .
+      MemorySize: 512
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - AmazonDynamoDBFullAccess
+      PackageType: Zip
+      Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_Delete_Generated::Delete
+      Events:
+        RootDelete:
+          Type: Api
+          Properties:
+            Path: /api/v1/customers/{id}
+            Method: DELETE
+  CustomizeTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: customize
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+        - AttributeName: CreatedAt
+          AttributeType: S
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      GlobalSecondaryIndexes:
+        - IndexName: GSI_SK_PK
+          KeySchema:
+            - AttributeName: SK
+              KeyType: HASH
+            - AttributeName: PK
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+        - IndexName: GSI_SK_CreatedAt
+          KeySchema:
+            - AttributeName: SK
+              KeyType: HASH
+            - AttributeName: CreatedAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+  DynamoDBEventMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      BatchSize: 1
+      Enabled: True
+      EventSourceArn: !GetAtt CustomizeTable.StreamArn
+      FunctionName: !GetAtt CustomerStreamProcess.Arn
+      StartingPosition: LATEST
+  CustomerStreamProcess:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+    Properties:
+      Runtime: dotnet8
+      CodeUri: .
+      MemorySize: 512
+      Timeout: 30
+      PackageType: Zip
+      Handler: Customize.Handlers::Customize.Handlers.Stream.CustomerStream_Receive_Generated::Receive
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/service-role/CustomizeLambdaRole
+  CustomerOptionsAPI:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootOptions
+      SyncedEventProperties:
+        RootOptions:
+          - Path
+          - Method
+    Properties:
+      Runtime: dotnet8
+      CodeUri: .
+      MemorySize: 512
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      PackageType: Zip
+      Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_Options_Generated::Options
+      Events:
+        RootOptions:
+          Type: Api
+          Properties:
+            Path: /api/v1/customers/*
+            Method: OPTIONS
+Outputs:
+  ApiURL:
+    Description: API endpoint URL for Prod environment
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/customize/api/v1

@@ -1,0 +1,9 @@
+<mat-dialog-content>
+  <p>{{ data.title }}</p>
+  <p>{{ data.message }}</p>
+  
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-raised-button color="secondary" (click)="onOk()"  cdkFocusInitial>Ok</button>
+</mat-dialog-actions>
