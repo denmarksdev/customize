@@ -1,5 +1,6 @@
 ﻿using Amazon.Lambda.Annotations.APIGateway;
 using Amazon.Lambda.Core;
+using Customize.Contracts.Base;
 using Customize.Contracts.Extensions;
 using Customize.Domain.DataObject;
 using Customize.Handlers.Extensions;
@@ -18,11 +19,24 @@ namespace Customize.Handlers.Base
             return baseResponse.MapAPIResponse();
         }
 
+        protected IHttpResult Options()
+        {
+           return HttpResults.Ok().MapOptions();
+        }
+
         protected IHttpResult MapResult<T>(Result<T> result, string? message = null)
         {
             var baseResponse = result.MapBaseResponse(message);
 
             return baseResponse.MapAPIResponse();
         }
+
+        protected IHttpResult BadRequest(string message)
+        {
+            var bad = new BaseResponse { Message = message };
+            return bad.MapAPIResponse();
+        }
+
+
     }
 }

@@ -22,7 +22,7 @@ namespace Customize.Handlers.API
                 .MapListCustomerRequest()
                 .MapCustomerQueryParam();
 
-            if (customerQueryParam == null) return HttpResults.BadRequest($"Payload para consulta de clientes inválido. {request.Body}");
+            if (customerQueryParam == null) return BadRequest($"Payload para consulta de clientes inválido. {request.Body}");
 
             var listResult = await customerService.ListAsync(customerQueryParam);
 
@@ -44,13 +44,13 @@ namespace Customize.Handlers.API
         [RestApi(LambdaHttpMethod.Post, "/api/v1/customers")]
         public async Task<IHttpResult> Post([FromBody] APIGatewayProxyRequest request, ILambdaContext context, [FromServices] ICustomerService customerService)
         {
-            if (request == null) return HttpResults.BadRequest("Payload para novo cliente inválido.");
+            if (request == null) return BadRequest("Payload para novo cliente inválido.");
 
             context.Logger.LogInformation($"New customer {request?.Serialize()}");
 
             var customer = request!.Body.Deserialize<PostCustomerRequest>()?.Map();
 
-            if (customer == null) return HttpResults.BadRequest($"Payload para novo cliente inválido. {request.Serialize()}");
+            if (customer == null) return BadRequest($"Payload para novo cliente inválido. {request.Serialize()}");
 
             var saveResult = await customerService.SaveAsync(customer);
 
@@ -61,13 +61,13 @@ namespace Customize.Handlers.API
         [RestApi(LambdaHttpMethod.Put, "/api/v1/customers")]
         public async Task<IHttpResult> Put([FromBody] APIGatewayProxyRequest request, ILambdaContext context, [FromServices] ICustomerService customerService)
         {
-            if (request == null) return HttpResults.BadRequest("Payload para novo cliente inválido.");
+            if (request == null) return BadRequest("Payload para novo cliente inválido.");
 
             context.Logger.LogInformation($"Update customer {request?.Serialize()}");
 
             var customer = request!.Body.Deserialize<PutCustomerRequest>()?.Map();
 
-            if (customer == null) return HttpResults.BadRequest($"Payload para novo cliente inválido. {request.Serialize()}");
+            if (customer == null) return BadRequest($"Payload para novo cliente inválido. {request.Serialize()}");
 
             var saveResult = await customerService.UpdateAsync(customer);
 
@@ -83,6 +83,13 @@ namespace Customize.Handlers.API
             var deleteResult = await customerService.DeleteAsync(id);
 
             return MapResult(deleteResult);
+        }
+
+        [LambdaFunction(ResourceName = "CustomerOptionsAPI")]
+        [RestApi(LambdaHttpMethod.Options, "/api/v1/customers")]
+        public IHttpResult Options(ILambdaContext _)
+        {
+            return Options();
         }
     }
 }

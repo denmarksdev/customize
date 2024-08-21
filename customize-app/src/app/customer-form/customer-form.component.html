@@ -1,4 +1,3 @@
-
 <app-page-title title="Cadastrar cliente" />
 
 <form [formGroup]="customerForm" (ngSubmit)="onSubmit()" class="container">
@@ -11,26 +10,45 @@
         <mat-form-field appearance="fill">
             <mat-label>Name</mat-label>
             <input matInput formControlName="name" ng-model>
-            @if (email?.invalid) {
-                <mat-error>Erro</mat-error>
+            @if (name?.invalid) {
+            <mat-error *ngFor="let error of name?.errors| keyvalue">
+                {{ this.mapError(error.key, error.value) }}
+            </mat-error>
             }
         </mat-form-field>
 
         <mat-form-field appearance="fill">
             <mat-label>Cellphone</mat-label>
-            <input matInput formControlName="cellphone" ng-model>
+            <input matInput formControlName="cellphone" placeholder="exemplo 551199994444" ng-model>
+            @if (cellphone?.invalid) {
+            <mat-error *ngFor="let error of cellphone?.errors| keyvalue">
+                {{ this.mapError(error.key, error.value) }}
+            </mat-error>
+            }
         </mat-form-field>
 
         <mat-form-field appearance="fill">
             <mat-label>Email</mat-label>
             <input matInput formControlName="email" ng-model>
+            @if (email?.invalid ) {
+            <mat-error *ngFor="let error of email?.errors| keyvalue">
+                {{ this.mapError(error.key, error.value) }}
+            </mat-error>
+            }
         </mat-form-field>
     </div>
 
-    <button mat-flat-button color="primary" type="submit" [disabled]="!customerForm.valid" >Cadastrar</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="!customerForm.valid">Cadastrar</button>
 
     @if (isLoading) {
-        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    }
+
+    @if (serverError) {
+    <mat-error *ngFor="let error of serverError.errors| keyvalue">
+        {{ this.mapError(error.key, error.value) }}
+    </mat-error>
+
     }
 
 </form>

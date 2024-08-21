@@ -12,11 +12,18 @@ namespace Customize.Handlers.Extensions
 
             var result = response.Success ? HttpResults.Ok(jsonData) : HttpResults.BadRequest(jsonData);
 
-            result.AddHeader("Access-Control-Allow-Headers", "*");
-            result.AddHeader("Access-Control-Allow-Origin", "*");
-            result.AddHeader("Access-Control-Allow-Methods", "OPTIONS,POST,GET,DELETE,PUT");
+            result = result.MapOptions();
 
             return result;
+        }
+
+        public static IHttpResult MapOptions(this IHttpResult httpResult) 
+        {
+            httpResult.AddHeader("Access-Control-Allow-Headers", "*");
+            httpResult.AddHeader("Access-Control-Allow-Origin", "*");
+            httpResult.AddHeader("Access-Control-Allow-Methods", "OPTIONS,POST,GET,DELETE,PUT");
+
+            return httpResult;
         }
     }
 }

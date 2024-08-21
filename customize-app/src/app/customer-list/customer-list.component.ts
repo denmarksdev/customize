@@ -8,13 +8,16 @@ import { RouterModule } from '@angular/router';
 import { CustomerService } from '../../services/customer-service';
 import { ListCustomerRequest } from '../../model/customer-query';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common'
 
+// TODO: refatorar componente dedicado.
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { provideNativeDateAdapter } from '@angular/material/core';
+import { PhoneFormatterPipe } from '../../pipes/phone-formatter.pipe';
 
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-list',
@@ -31,11 +34,14 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
     FormsModule,
     MatProgressBarModule,
     PageTitleComponent,
+    DatePipe,
+    PhoneFormatterPipe
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.scss'
 })
+
 
 @Injectable()
 export class CustomerListComponent implements OnInit {
