@@ -2,7 +2,7 @@
 Aplicação para  Gestão de clientes e contas
 
 # Visão geral do cadastro de clientes
-![image](https://github.com/user-attachments/assets/479fa6d4-17cf-49a9-8818-c59e9b35013e)
+![image](https://github.com/user-attachments/assets/a76dae80-a293-40c5-85b9-18e98175a73a)
 
 # Diagrama de sequência Clientes
 
@@ -16,8 +16,7 @@ Aplicação para  Gestão de clientes e contas
 ![image](https://github.com/user-attachments/assets/21c52c18-b332-4276-95b1-66dbec28c983)
 
 # Estrutura do projeto
-![image](https://github.com/user-attachments/assets/2f092810-3be3-4ed8-af98-b473059c633d)
-
+![image](https://github.com/user-attachments/assets/6437e2c4-9443-4c72-b7e5-defa99bcb306)
 
 # Customize APP
 ## Clientes
