@@ -91,5 +91,13 @@ namespace Customize.Handlers.API
         {
             return Options();
         }
+
+        [LambdaFunction(ResourceName = "CustomerOptions2API")]
+        [RestApi(LambdaHttpMethod.Options, "/api/v1/customers/{id}")]
+        public IHttpResult Options2(ILambdaContext _, string id)
+        {
+            Console.WriteLine("test " + id);
+            return Options();
+        }
     }
 }

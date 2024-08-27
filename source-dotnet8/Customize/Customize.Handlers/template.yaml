@@ -216,8 +216,74 @@ Resources:
           Properties:
             Path: /api/v1/customers/
             Method: OPTIONS
+  CustomizeAppBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Sub "${AWS::StackName}-angular-app"
+  CustomizeAppCloudFrontDistribution:
+    Type: "AWS::CloudFront::Distribution"
+    Properties:
+      DistributionConfig:
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt CustomizeAppBucket.DomainName
+            S3OriginConfig:
+              OriginAccessIdentity: ""
+        Enabled: true
+        DefaultRootObject: index.html
+        DefaultCacheBehavior:
+          AllowedMethods:
+            - HEAD
+            - GET
+            - OPTIONS
+          DefaultTTL: 86400
+          MaxTTL: 31536000
+          MinTTL: 0
+          ForwardedValues:
+            QueryString: false
+            Cookies:
+              Forward: none
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+        PriceClass: PriceClass_100
+  CustomerOptions2API:
+    Type: AWS::Serverless::Function
+    Metadata:
+      Tool: Amazon.Lambda.Annotations
+      SyncedEvents:
+        - RootOptions
+      SyncedEventProperties:
+        RootOptions:
+          - Path
+          - Method
+    Properties:
+      Runtime: dotnet8
+      CodeUri: .
+      MemorySize: 512
+      Timeout: 30
+      Policies:
+        - AWSLambdaBasicExecutionRole
+      PackageType: Zip
+      Handler: Customize.Handlers::Customize.Handlers.API.CustomerAPI_Options2_Generated::Options2
+      Events:
+        RootOptions:
+          Type: Api
+          Properties:
+            Path: /api/v1/customers/{id}
+            Method: OPTIONS
 Outputs:
   ApiURL:
     Description: API endpoint URL for Prod environment
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/customize/api/v1
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/prod/api/v1
+  S3BucketName:
+    Description: "S3 bucket name"
+    Value: !Ref CustomizeAppBucket
+  CloudFrontDistributionId:
+    Description: "CloudFront distribution ID"
+    Value: !Ref CustomizeAppCloudFrontDistribution
+  CloudFrontDistributionDomain:
+    Description: "CloudFront distribution domain name"
+    Value: !GetAtt CustomizeAppCloudFrontDistribution.DomainName
